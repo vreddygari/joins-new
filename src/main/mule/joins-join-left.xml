@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="joins-join-leftFlow" doc:id="da41acf3-4fa1-4ff3-a9de-536066688b5b" >
+		<ee:transform doc:name="Transform Message" doc:id="c53f0777-c7c8-46d2-a93e-e809438bd57c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import * from dw::core::Arrays
+output application/json
+var arr=[1,2,3,4,5,6,7,8]
+var emp=[{
+    "empname":"RVR",
+    "emploc":"hyd",
+    "empexp":"12",
+    "empstatus":"A" 
+   
+},
+{
+    "empname":"RMR",
+    "emploc":"hyd",
+    "empexp":"11",
+    "empstatus":"A" 
+    
+},
+{
+    "empname":"RBR",
+    "emploc":"hyd",
+    "empexp":"10",
+    "empstatus":"I"
+},
+{
+    "empname":"RSR",
+    "emploc":"hyd",
+    "empexp":"9",
+    "empstatus":"I"
+}
+]
+---
+{
+emp:drop(arr,2),
+emp1:take(arr,2),
+emp2:partition(arr,isEven),
+emp3:arr partition((value)->isEven(value)),
+
+empn1:drop(emp,1),
+empn21:take(emp,2),
+emp31:emp partition((item)-> item.empexp >10)
+
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
